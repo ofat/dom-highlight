@@ -6,7 +6,8 @@
 
         options = $.extend({
             backdropBackground: 'rgba(0,0,0, .3)',
-            zIndex: 1000
+            zIndex: 1000,
+            highlightClass: 'dom-highlight'
         }, options);
 
         var backdropId = "dh-backdrop",
@@ -25,6 +26,7 @@
 
         var cleanPrevious = function() {
             $("#"+backdropId).remove();
+            $("."+options.highlightClass).remove();
         };
 
         var draw = function() {
@@ -33,22 +35,23 @@
             $body.append($backdrop);
 
             var pos = $this.position(),
-                width = $this.width(),
-                height = $this.height(),
-                $clone = $this.clone();
+                width = $this.outerWidth(),
+                height = $this.outerHeight();
 
-            $clone.css({
-                position: 'absolute',
-                width: width,
-                height: height,
-                zIndex: options.zIndex+1,
-                top: pos.top,
-                left: pos.left
-            });
+            $this
+                .addClass(options.highlightClass)
+                .css({
+                    position: 'absolute',
+                    width: width,
+                    height: height,
+                    zIndex: options.zIndex+1,
+                    top: pos.top,
+                    left: pos.left
+                });
 
-            $body.append($clone);
         };
         draw();
         $(window).resize(draw);
+
     };
 }(jQuery);
